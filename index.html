@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#174c43" />
+    <title>Voluntários | Asilo de Vitória</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="brand-mark">♥</div>
+          <div>
+            <strong>Asilo de Vitória</strong><span>Gestão de voluntários</span>
+          </div>
+        </div>
+        <div class="side-label">MENU PRINCIPAL</div>
+        <nav class="navigation">
+          <button class="nav-item active" data-view="dashboard">
+            <span class="nav-icon">▦</span> Visão geral
+          </button>
+          <button class="nav-item" data-view="volunteers">
+            <span class="nav-icon">♙</span> Voluntários
+            <span class="nav-count" id="navVolunteerCount">0</span>
+          </button>
+          <button class="nav-item" data-view="activities">
+            <span class="nav-icon">▤</span> Atividades
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="help-card">
+            <div class="help-icon">✦</div>
+            <strong>Cuidado que transforma</strong>
+            <p>
+              Uma comunidade mais próxima começa com pessoas dispostas a ajudar.
+            </p>
+          </div>
+          <div class="profile">
+            <div class="avatar admin-avatar">AV</div>
+            <div>
+              <strong>Administrador</strong><span>Asilo de Vitória</span>
+            </div>
+            <span class="profile-dots">•••</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobileMenu" aria-label="Abrir menu">
+            ☰
+          </button>
+          <div class="breadcrumb">
+            Asilo de Vitória <span>/</span>
+            <strong id="breadcrumbCurrent">Visão geral</strong>
+          </div>
+          <div class="top-actions">
+            <span class="today" id="todayLabel"></span>
+            <div class="avatar admin-avatar">AV</div>
+          </div>
+        </header>
+
+        <section class="view active" id="dashboardView">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">PAINEL DE CONTROLE</div>
+              <h1>Bom dia! <span class="wave">✦</span></h1>
+              <p>Acompanhe os voluntários e as atividades da instituição.</p>
+            </div>
+            <button class="btn btn-primary" id="addVolunteerTop">
+              <span>＋</span> Cadastrar voluntário
+            </button>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Total de voluntários</span
+                ><span class="stat-icon green">♙</span>
+              </div>
+              <div class="stat-number" id="totalVolunteers">0</div>
+              <div class="stat-foot">
+                <span class="dot green-dot"></span> Pessoas cadastradas
+              </div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Disponíveis</span><span class="stat-icon blue">✓</span>
+              </div>
+              <div class="stat-number" id="availableVolunteers">0</div>
+              <div class="stat-foot">Com disponibilidade registrada</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Atividades cadastradas</span
+                ><span class="stat-icon amber">▤</span>
+              </div>
+              <div class="stat-number" id="totalActivities">0</div>
+              <div class="stat-foot">Ações e eventos da instituição</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Participações</span
+                ><span class="stat-icon violet">♡</span>
+              </div>
+              <div class="stat-number" id="totalParticipations">0</div>
+              <div class="stat-foot">Vínculos com atividades</div>
+            </article>
+          </div>
+          <div class="dashboard-grid">
+            <section class="panel recent-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Voluntários recentes</h2>
+                  <p>Últimos cadastros realizados</p>
+                </div>
+                <button class="text-button" data-goto="volunteers">
+                  Ver todos <span>→</span>
+                </button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>VOLUNTÁRIO</th>
+                      <th>ÁREA DE INTERESSE</th>
+                      <th>DISPONIBILIDADE</th>
+                      <th>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentTable"></tbody>
+                </table>
+              </div>
+              <div class="empty-state" id="recentEmpty">
+                <div class="empty-icon">♙</div>
+                <strong>Nenhum voluntário cadastrado</strong>
+                <p>Cadastre a primeira pessoa para começar.</p>
+                <button class="btn btn-outline" id="emptyAddBtn">
+                  Cadastrar voluntário
+                </button>
+              </div>
+            </section>
+            <section class="panel activity-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Próximas atividades</h2>
+                  <p>Programação da instituição</p>
+                </div>
+                <button
+                  class="icon-button"
+                  id="addActivityQuick"
+                  title="Nova atividade"
+                >
+                  ＋
+                </button>
+              </div>
+              <div id="upcomingActivities" class="upcoming-list"></div>
+              <div class="empty-state compact" id="activitiesEmpty">
+                <div class="empty-icon">▤</div>
+                <strong>Nenhuma atividade</strong>
+                <p>Adicione uma atividade para organizar a participação.</p>
+                <button class="text-button" data-goto="activities">
+                  Ver atividades →
+                </button>
+              </div>
+            </section>
+          </div>
+          <div class="privacy-note">
+            <span>ⓘ</span> Os dados cadastrados ficam armazenados neste
+            navegador. Faça exportações periódicas para manter uma cópia de
+            segurança.
+          </div>
+        </section>
+
+        <section class="view" id="volunteersView">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">CADASTRO E ORGANIZAÇÃO</div>
+              <h1>Voluntários</h1>
+              <p>
+                Consulte, cadastre e gerencie as pessoas que fazem parte dessa
+                rede de cuidado.
+              </p>
+            </div>
+            <button class="btn btn-primary" id="addVolunteerBtn">
+              ＋ Novo voluntário
+            </button>
+          </div>
+          <div class="toolbar">
+            <div class="search-box">
+              <span>⌕</span
+              ><input
+                id="volunteerSearch"
+                type="search"
+                placeholder="Buscar por nome, e-mail ou telefone..."
+              />
+            </div>
+            <select id="statusFilter">
+              <option value="">Todos os status</option>
+              <option value="Ativo">Ativo</option>
+              <option value="Inativo">Inativo</option></select
+            ><select id="areaFilter">
+              <option value="">Todas as áreas</option>
+              <option>Convivência</option>
+              <option>Saúde e bem-estar</option>
+              <option>Oficinas</option>
+              <option>Eventos</option>
+              <option>Administrativo</option>
+              <option>Outros</option></select
+            ><button class="btn btn-outline" id="exportBtn">
+              ⇩ Exportar CSV
+            </button>
+          </div>
+          <section class="panel directory-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Lista de voluntários</h2>
+                <p id="volunteerResults">0 pessoas encontradas</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>VOLUNTÁRIO</th>
+                    <th>CONTATO</th>
+                    <th>ÁREA DE INTERESSE</th>
+                    <th>DISPONIBILIDADE</th>
+                    <th>STATUS</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="volunteersTable"></tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="volunteersEmpty">
+              <div class="empty-icon">⌕</div>
+              <strong>Nenhum resultado encontrado</strong>
+              <p>Tente alterar os filtros ou cadastre um novo voluntário.</p>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="activitiesView">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">PLANEJAMENTO</div>
+              <h1>Atividades</h1>
+              <p>Organize ações, encontros e oportunidades de participação.</p>
+            </div>
+            <button class="btn btn-primary" id="addActivityBtn">
+              ＋ Nova atividade
+            </button>
+          </div>
+          <div class="toolbar">
+            <div class="search-box">
+              <span>⌕</span
+              ><input
+                id="activitySearch"
+                type="search"
+                placeholder="Buscar atividade..."
+              />
+            </div>
+            <select id="activityFilter">
+              <option value="">Todas as atividades</option>
+              <option value="future">Próximas</option>
+              <option value="past">Realizadas</option>
+            </select>
+          </div>
+          <div class="activity-cards" id="activityCards"></div>
+          <div class="empty-state panel" id="activityCardsEmpty">
+            <div class="empty-icon">▤</div>
+            <strong>Nenhuma atividade encontrada</strong>
+            <p>Cadastre uma atividade para começar a organizar a agenda.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="volunteerModal" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <div>
+            <div class="eyebrow">CADASTRO</div>
+            <h2 id="volunteerModalTitle">Novo voluntário</h2>
+            <p>Preencha os dados para incluir uma pessoa na equipe.</p>
+          </div>
+          <button class="close-modal" data-close="volunteerModal">×</button>
+        </div>
+        <form id="volunteerForm">
+          <input type="hidden" id="volunteerId" />
+          <div class="form-grid">
+            <label class="full"
+              >Nome completo *<input
+                id="vName"
+                required
+                maxlength="100"
+                placeholder="Ex.: Maria da Silva"
+            /></label>
+            <label
+              >E-mail<input
+                id="vEmail"
+                type="email"
+                maxlength="120"
+                placeholder="nome@email.com" /></label
+            ><label
+              >Telefone<input
+                id="vPhone"
+                maxlength="30"
+                placeholder="(27) 99999-9999"
+            /></label>
+            <label
+              >Área de interesse *<select id="vArea" required>
+                <option value="">Selecione uma área</option>
+                <option>Convivência</option>
+                <option>Saúde e bem-estar</option>
+                <option>Oficinas</option>
+                <option>Eventos</option>
+                <option>Administrativo</option>
+                <option>Outros</option>
+              </select></label
+            >
+            <label
+              >Disponibilidade *<select id="vAvailability" required>
+                <option value="">Selecione</option>
+                <option>Manhã</option>
+                <option>Tarde</option>
+                <option>Noite</option>
+                <option>Fins de semana</option>
+                <option>Flexível</option>
+                <option>A combinar</option>
+              </select></label
+            >
+            <label
+              >Status<select id="vStatus">
+                <option>Ativo</option>
+                <option>Inativo</option>
+              </select></label
+            ><label>Data de entrada<input id="vDate" type="date" /></label>
+            <label class="full"
+              >Observações<textarea
+                id="vNotes"
+                rows="3"
+                maxlength="500"
+                placeholder="Experiências, preferências ou informações relevantes..."
+              ></textarea>
+            </label>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline"
+              data-close="volunteerModal"
+            >
+              Cancelar</button
+            ><button type="submit" class="btn btn-primary">
+              Salvar voluntário
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="activityModal" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <div>
+            <div class="eyebrow">PROGRAMAÇÃO</div>
+            <h2 id="activityModalTitle">Nova atividade</h2>
+            <p>Registre os detalhes da atividade.</p>
+          </div>
+          <button class="close-modal" data-close="activityModal">×</button>
+        </div>
+        <form id="activityForm">
+          <input type="hidden" id="activityId" />
+          <div class="form-grid">
+            <label class="full"
+              >Nome da atividade *<input
+                id="aName"
+                required
+                maxlength="100"
+                placeholder="Ex.: Tarde de música"
+            /></label>
+            <label>Data *<input id="aDate" type="date" required /></label
+            ><label>Horário<input id="aTime" type="time" /></label>
+            <label
+              >Local<input
+                id="aLocation"
+                maxlength="100"
+                placeholder="Ex.: Sala de convivência" /></label
+            ><label
+              >Vagas disponíveis<input
+                id="aSlots"
+                type="number"
+                min="1"
+                max="500"
+                placeholder="Ex.: 8"
+            /></label>
+            <label class="full"
+              >Descrição<textarea
+                id="aDescription"
+                rows="3"
+                maxlength="500"
+                placeholder="Conte um pouco sobre a atividade..."
+              ></textarea>
+            </label>
+            <label class="full"
+              >Voluntários participantes<select
+                id="aVolunteers"
+                multiple
+                size="5"
+                class="multi-select"
+              ></select
+              ><small
+                >Use Ctrl (ou Command no Mac) para selecionar mais de uma
+                pessoa.</small
+              ></label
+            >
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline"
+              data-close="activityModal"
+            >
+              Cancelar</button
+            ><button type="submit" class="btn btn-primary">
+              Salvar atividade
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
